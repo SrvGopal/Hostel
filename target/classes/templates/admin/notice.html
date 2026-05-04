@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Notices</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background: #f5f5f5; }
+    .navbar { background: #1e3a5f !important; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand fw-bold" href="/admin/dashboard">Hostel Portal</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/students">Students</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/complaints">Complaints</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/admin/notices">Notices</a></li>
+        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <h4 class="mb-3">Notice Board</h4>
+
+  <div class="card p-4 mb-4">
+    <h5 class="mb-3">Post New Notice</h5>
+    <form th:action="@{/admin/notices/add}" method="post">
+      <div class="mb-3">
+        <input type="text" class="form-control" name="title" placeholder="Notice Title" required>
+      </div>
+      <div class="mb-3">
+        <textarea class="form-control" rows="3" name="message" placeholder="Notice details..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-success">Post Notice</button>
+    </form>
+  </div>
+
+  <div class="card p-3">
+    <h5 class="mb-3">All Notices</h5>
+    <p th:if="${#lists.isEmpty(notices)}" class="text-muted">No notices posted yet.</p>
+    <div th:each="notice : ${notices}" class="border rounded p-3 mb-2">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <strong th:text="${notice.title}"></strong>
+          <p class="mb-1 text-muted" style="font-size:14px;" th:text="${notice.message}"></p>
+          <small class="text-muted" th:text="${notice.posted_on}"></small>
+        </div>
+        <a th:href="@{/admin/notices/delete/{id}(id=${notice.id})}"
+           class="btn btn-sm btn-danger ms-3"
+           onclick="return confirm('Delete this notice?')">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
